@@ -1,30 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import { Button, StyleSheet, Text, View } from 'react-native';
+// hook - useState
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// convencional - hook + estados
-function Contador() {
-  const [valor, setValor] = useState(0); // hook para controlar estados
+export default function App() {
+  const [valor, setValor] = useState(0);
 
-  function adicionarValor() {
-    setValor(valor + 1)
-    console.log(valor);
+  function contar() {
+    setValor(valor + 1);
   }
 
   return (
-    <View>
-      <Text style={styles.text}>{valor}</Text>
-      <TouchableOpacity onPress={adicionarValor}>
-        <Text style={styles.text}>+1</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export default function App() {
-  return (
     <View style={styles.container}>
-      <Contador />
+      <Text style={styles.text}>{valor}</Text>
+      <Button title='+1' onPress={contar} />
     </View>
   );
 }
@@ -32,12 +20,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "red",
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: '2rem'
   },
   text: {
-    fontSize: "20px",
-    color: "red"
+    fontSize: '1.2rem',
+    color: "#ffff"
   }
 });
