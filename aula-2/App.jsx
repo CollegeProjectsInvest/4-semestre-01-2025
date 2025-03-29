@@ -1,33 +1,38 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
-// hook - useState
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useState } from 'react';
 
-export default function App() {
-  const [valor, setValor] = useState(0);
+import { Input } from './src/components/input';
+import { OrDivider } from './src/components/or-divider';
+import { Button } from './src/components/button';
+import { Header } from './src/components/header';
+import { Container } from './src/components/container';
 
-  function contar() {
-    setValor(valor + 1);
-  }
+export default function App() {
+  const [showPassword, setShowPassword] = useState(true);
+  const { width: widthWindow } = useWindowDimensions();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{valor}</Text>
-      <Button title='+1' onPress={contar} />
-    </View>
+    <Container>
+      <Header title={"Bem-vindo!"} />
+      <View style={[styles.form, { width: widthWindow < 830 ? '90%' : '60%' }]}>
+        <Input placeholder='E-mail' />
+        <Input
+          placeholder="Senha"
+          icon={showPassword ? 'eye' : 'eye-off'}
+          onClickIcon={() => setShowPassword(!showPassword)}
+          showPassword={showPassword}
+        />
+        <Button>Entrar</Button>
+        <OrDivider />
+        <Button asLink>Criar uma conta</Button>
+      </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "red",
-    display: 'flex',
+  form: {
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: '2rem'
+    gap: 15
   },
-  text: {
-    fontSize: '1.2rem',
-    color: "#ffff"
-  }
 });
