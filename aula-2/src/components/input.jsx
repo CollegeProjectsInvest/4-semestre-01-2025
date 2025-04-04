@@ -1,7 +1,7 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Feather } from '@expo/vector-icons'
 
-export function Input({ placeholder, icon, onClickIcon, showPassword }) {
+export function Input({ placeholder, icon, onClickIcon, showPassword, onChangeText, value }) {
     if (icon) {
         return (
             <View style={styles.inputIcon}>
@@ -10,6 +10,8 @@ export function Input({ placeholder, icon, onClickIcon, showPassword }) {
                     placeholder={placeholder}
                     placeholderTextColor={'#ABABAB'}
                     secureTextEntry={showPassword}
+                    onChangeText={onChangeText}
+                    value={value}
                 />
                 <TouchableOpacity onPress={onClickIcon}>
                     <Feather name={icon} size={15} style={styles.icon} />
