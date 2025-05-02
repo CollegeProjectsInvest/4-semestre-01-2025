@@ -1,30 +1,31 @@
-import { View } from "react-native-web";
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { Typography } from "./typography";
+import * as theme from '../styles/theme';
+import { Typography } from './typography';
 
 export function OrDivider() {
     return (
         <View style={styles.divider}>
             <View style={styles.line} />
-            <Typography variant='thin'>Ou</Typography>
+            <Typography variant="thin">Ou</Typography>
             <View style={styles.line} />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     line: {
-        backgroundColor: '#ABABAB',
-        height: '1px',
-        borderRadius: '1rem',
+        backgroundColor: theme.colors.gray,
+        height: theme.scale(1),
+        borderRadius: theme.scale(4),
         width: '40%',
     },
     divider: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 10,
+        gap: theme.spacing.md,
         width: '100%',
     },
 });

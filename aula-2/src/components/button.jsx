@@ -1,29 +1,30 @@
-import { TouchableOpacity } from "react-native";
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 
-import { Typography } from "./typography";
+import * as theme from '../styles/theme';
+import { Typography } from './typography';
 
-export function Button({ children, asLink }) {
+export function Button({ children, asLink, onPress }) {
     if (asLink) {
         return (
-            <TouchableOpacity>
-                <Typography variant='link'>{children}</Typography>
+            <TouchableOpacity onPress={onPress}>
+                <Typography variant="link">{children}</Typography>
             </TouchableOpacity>
         );
     }
 
     return (
-        <TouchableOpacity style={styles.button}>
-            <Typography variant='button'>{children}</Typography>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+            <Typography variant="button">{children}</Typography>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#BB86FC',
-        padding: '1rem',
-        borderRadius: '0.5rem',
-        width: '100%'
+        backgroundColor: theme.colors.primary,
+        padding: theme.spacing.md,
+        borderRadius: theme.scale(4),
+        width: '100%',
     },
 });

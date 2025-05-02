@@ -1,31 +1,35 @@
-import { Text, StyleSheet } from "react-native";
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
 
-export function Typography({ children, variant = 'default' }) {
-    return <Text style={styles[variant]}>{children}</Text>
+import * as theme from '../styles/theme';
+
+export function Typography({ children, variant = 'default', style }) {
+    return <Text style={[styles[variant], style]}>{children}</Text>;
 }
 
 const styles = StyleSheet.create({
     title: {
-        color: "white",
+        color: theme.colors.white,
         fontWeight: 'bold',
-        fontSize: '1.5rem',
-        textAlign: 'center'
+        fontSize: theme.fontSize.large,
+        textAlign: 'center',
     },
     button: {
-        color: 'white',
+        color: theme.colors.white,
         textAlign: 'center',
-        fontSize: '1.2rem'
+        fontSize: theme.fontSize.medium,
     },
     thin: {
-        color: '#ABABAB',
-        fontSize: '1rem'
+        color: theme.colors.gray,
+        fontSize: theme.fontSize.medium,
     },
     link: {
-        color: '#ABABAB',
-        textDecorationLine: 'underline'
+        color: theme.colors.gray,
+        textDecorationLine: 'underline',
+        fontSize: theme.fontSize.small,
     },
     default: {
-        color: 'white',
-        fontSize: '1rem',
-    }
+        color: theme.colors.white,
+        fontSize: theme.fontSize.medium,
+    },
 });
