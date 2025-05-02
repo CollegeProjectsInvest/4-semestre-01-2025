@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import * as theme from '../styles/theme';
 import { Input } from '../components/input';
@@ -10,6 +10,8 @@ import { Header } from '../components/header';
 import { Container } from '../components/container';
 
 export function RegisterPage() {
+    const navigation = useNavigation();
+
     const [showPassword, setShowPassword] = useState(true);
     const [showConfirmationPassword, setShowConfirmationPassword] = useState(true);
     const [password, setPassword] = useState('');
@@ -38,9 +40,11 @@ export function RegisterPage() {
                     value={confirmationPassword}
                 />
                 {password !== confirmationPassword && <Text style={{ color: 'red' }}>As senhas devem ser iguais</Text>}
-                <Button>Cadastrar</Button>
+                <Button onPress={() => navigation.navigate('tasks')}>Cadastrar</Button>
                 <OrDivider />
-                <Button asLink>Já tenho uma conta</Button>
+                <Button asLink onPress={() => navigation.navigate('login')}>
+                    Já tenho uma conta
+                </Button>
             </View>
         </Container>
     );

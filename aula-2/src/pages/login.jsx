@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import * as theme from '../styles/theme';
 import { Input } from '../components/input';
@@ -10,6 +10,8 @@ import { Header } from '../components/header';
 import { Container } from '../components/container';
 
 export function LoginPage() {
+    const navigation = useNavigation();
+
     const [showPassword, setShowPassword] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -29,9 +31,11 @@ export function LoginPage() {
                     onClickIcon={() => setShowPassword(!showPassword)}
                     showPassword={showPassword}
                 />
-                <Button>Entrar</Button>
+                <Button onPress={() => navigation.navigate('tasks')}>Entrar</Button>
                 <OrDivider />
-                <Button asLink>Criar uma conta</Button>
+                <Button asLink onPress={() => navigation.navigate('register')}>
+                    Criar uma conta
+                </Button>
             </View>
         </Container>
     );
