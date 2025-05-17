@@ -8,6 +8,7 @@ import { OrDivider } from '../components/or-divider';
 import { Button } from '../components/button';
 import { Header } from '../components/header';
 import { Container } from '../components/container';
+import { loginService } from '../services/login-service';
 
 export function LoginPage() {
     const navigation = useNavigation();
@@ -31,7 +32,13 @@ export function LoginPage() {
                     onClickIcon={() => setShowPassword(!showPassword)}
                     showPassword={showPassword}
                 />
-                <Button onPress={() => navigation.navigate('tasks')}>Entrar</Button>
+                <Button
+                    onPress={async () => {
+                        await loginService(email, password);
+                    }}
+                >
+                    Entrar
+                </Button>
                 <OrDivider />
                 <Button asLink onPress={() => navigation.navigate('register')}>
                     Criar uma conta
