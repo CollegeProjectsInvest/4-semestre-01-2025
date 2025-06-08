@@ -11,6 +11,10 @@ export class TaskDeleteController {
 
             const taskRepository = new TaskRepository();
 
+            const taskExists = await taskRepository.get({ id, userId });
+            if (!taskExists) {
+                return httpHelper.badRequest("Dados inválidos");
+            }
             const taskDeleted = await taskRepository.delete({ id, userId });
 
             return httpHelper.ok(taskDeleted);

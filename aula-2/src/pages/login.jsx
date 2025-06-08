@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, useWindowDimensions, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import * as theme from '../styles/theme';
@@ -8,9 +8,11 @@ import { OrDivider } from '../components/or-divider';
 import { Button } from '../components/button';
 import { Header } from '../components/header';
 import { Container } from '../components/container';
-import { loginService } from '../services/login-service';
+import { useAuthContext } from '../contexts/auth-context';
 
 export function LoginPage() {
+    const { login, loading, error, user } = useAuthContext();
+
     const navigation = useNavigation();
 
     const [showPassword, setShowPassword] = useState(true);
@@ -18,6 +20,12 @@ export function LoginPage() {
     const [password, setPassword] = useState('');
 
     const { width: widthWindow } = useWindowDimensions();
+
+    useEffect(() => {
+        if (user) {
+            navigation.navigate('tasks');
+        }
+    }, [user]);
 
     return (
         <Container>
@@ -32,11 +40,8 @@ export function LoginPage() {
                     onClickIcon={() => setShowPassword(!showPassword)}
                     showPassword={showPassword}
                 />
-                <Button
-                    onPress={async () => {
-                        await loginService(email, password);
-                    }}
-                >
+                {error && <Text style={{ color: theme.colors.red }}>{error}</Text>}
+                <Button loading={loading} onPress={async () => await login({ email, password })}>
                     Entrar
                 </Button>
                 <OrDivider />

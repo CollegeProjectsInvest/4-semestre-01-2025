@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 
 import * as theme from '../styles/theme';
 import { Typography } from './typography';
 
-export function Button({ children, asLink, onPress }) {
+export function Button({ children, asLink, onPress, loading }) {
     if (asLink) {
         return (
             <TouchableOpacity onPress={onPress}>
@@ -14,8 +14,8 @@ export function Button({ children, asLink, onPress }) {
     }
 
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Typography variant="button">{children}</Typography>
+        <TouchableOpacity style={styles.button} onPress={onPress} disabled={loading}>
+            {loading ? <ActivityIndicator /> : <Typography variant="button">{children}</Typography>}
         </TouchableOpacity>
     );
 }

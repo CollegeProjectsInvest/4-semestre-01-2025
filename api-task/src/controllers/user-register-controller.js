@@ -10,7 +10,13 @@ export class UserRegisterController {
         try {
             const { email, password, confirmationPassword } = request.body;
 
-            if (!Validator.fieldsRequired([email, password, confirmationPassword])) {
+            if (
+                !Validator.fieldsRequired([
+                    email,
+                    password,
+                    confirmationPassword,
+                ])
+            ) {
                 return httpHelper.badRequest("Dados são obrigatórios");
             }
 
@@ -42,7 +48,14 @@ export class UserRegisterController {
                 { expiresIn: "1d" },
             );
 
-            return httpHelper.created({ accessToken });
+            response.setCookie("token", accessToken, {
+                path: "/",
+                httpOnly: true,
+                sameSite: "strict",
+                secure: process.env.NODE_ENV === "production",
+            });
+
+            return httpHelper.created({ user: { email: userCreated.email } });
         } catch (error) {
             return httpHelper.internalError(error);
         }

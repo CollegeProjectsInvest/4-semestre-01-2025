@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,15 +8,25 @@ import { OrDivider } from '../components/or-divider';
 import { Button } from '../components/button';
 import { Header } from '../components/header';
 import { Container } from '../components/container';
+import { useAuthContext } from '../contexts/auth-context';
 
 export function RegisterPage() {
+    const { register, loading, error, user } = useAuthContext();
+
     const navigation = useNavigation();
 
     const [showPassword, setShowPassword] = useState(true);
     const [showConfirmationPassword, setShowConfirmationPassword] = useState(true);
     const [password, setPassword] = useState('');
     const [confirmationPassword, setConfirmationPassword] = useState('');
+
     const { width: widthWindow } = useWindowDimensions();
+
+    useEffect(() => {
+        if (user) {
+            navigation.navigate('tasks');
+        }
+    }, [user]);
 
     return (
         <Container>
@@ -39,8 +49,11 @@ export function RegisterPage() {
                     onChangeText={setConfirmationPassword}
                     value={confirmationPassword}
                 />
-                {password !== confirmationPassword && <Text style={{ color: 'red' }}>As senhas devem ser iguais</Text>}
-                <Button onPress={() => navigation.navigate('tasks')}>Cadastrar</Button>
+                {password !== confirmationPassword && <Text style={{ color: theme.colors.red }}>As senhas devem ser iguais</Text>}
+                {error && <Text style={{ color: theme.colors.red }}>{error}</Text>}
+                <Button loading={loading} onPress={async () => await register({ email, password, confirmationPassword })}>
+                    Cadastrar
+                </Button>
                 <OrDivider />
                 <Button asLink onPress={() => navigation.navigate('login')}>
                     Já tenho uma conta

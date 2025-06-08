@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 
 import * as theme from '../styles/theme';
 import { Container } from '../components/container';
@@ -7,40 +7,12 @@ import { Header } from '../components/header';
 import { TaskCard } from '../components/task-card';
 import { Input } from '../components/input';
 import { Button } from '../components/button';
-
-let id = 1;
+import { useTaskContext } from '../contexts/task-context';
 
 export function TasksPage() {
+    const { loading, error, tasks, createTask, deleteTask, updateTask } = useTaskContext();
+
     const [title, setTitle] = useState('');
-    const [tasks, setTasks] = useState([]);
-
-    const onCreateTask = () => {
-        setTasks([
-            ...tasks,
-            {
-                id,
-                title,
-                finished: false,
-            },
-        ]);
-        id += 1;
-        setTitle('');
-    };
-
-    const onRemoveTask = (id) => {
-        setTasks(tasks.filter((item) => item.id !== id));
-    };
-
-    const onUpdateTask = (id) => {
-        setTasks(
-            tasks.map((item) => {
-                if (item.id === id) {
-                    item.finished = !item.finished;
-                }
-                return item;
-            })
-        );
-    };
 
     return (
         <Container>
@@ -51,11 +23,20 @@ export function TasksPage() {
                 contentContainerStyle={{ gap: theme.spacing.md }}
                 showsVerticalScrollIndicator={false}
                 style={styles.listTasks}
-                renderItem={({ item }) => <TaskCard {...item} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />}
+                renderItem={({ item }) => (
+                    <TaskCard
+                        {...item}
+                        onRemoveTask={() => deleteTask({ id: item.id })}
+                        onUpdateTask={() => updateTask({ id: item.id, finished: !item.finished })}
+                    />
+                )}
             />
             <View style={styles.form}>
                 <Input type="text" value={title} onChangeText={setTitle} placeholder="Insira o título da tarefa" />
-                <Button onPress={onCreateTask}>Adicionar</Button>
+                <Button loading={loading} onPress={() => createTask({ title })}>
+                    Adicionar
+                </Button>
+                {error && <Text style={{ color: theme.colors.red }}>{error}</Text>}
             </View>
         </Container>
     );

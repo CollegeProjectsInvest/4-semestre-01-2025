@@ -36,7 +36,14 @@ export class UserLoginController {
                 { expiresIn: "1d" },
             );
 
-            return httpHelper.ok({ accessToken });
+            response.setCookie("token", accessToken, {
+                path: "/",
+                httpOnly: true,
+                sameSite: "strict",
+                secure: process.env.NODE_ENV === "production",
+            });
+
+            return httpHelper.ok({ user: { email: userExists.email } });
         } catch (error) {
             return httpHelper.internalError(error);
         }
